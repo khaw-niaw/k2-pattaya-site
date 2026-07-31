@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://k2pattaya.co.th/sitemap.xml
