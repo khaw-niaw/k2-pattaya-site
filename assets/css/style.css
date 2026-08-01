@@ -94,6 +94,7 @@ main,footer{position:relative;z-index:1}
 .cta svg{display:block;width:100%;height:8px;margin-top:6px}
 .cta polyline{fill:none;stroke:var(--accent);stroke-width:1.5}
 .cta:hover{color:var(--accent)}
+.cta-row{display:flex;flex-wrap:wrap;column-gap:48px;row-gap:4px}
 .cta-inv{color:var(--paper)}
 .cta-inv:hover{color:var(--panel)}
 footer{background:var(--ink);color:var(--paper)}
