@@ -175,3 +175,43 @@
     });
   }
 })();
+
+/* 5) Cookie同意バナー（Consent Mode v2 と連動）
+   同意されるまで analytics_storage は denied のまま。同意時に granted へ更新する。
+   既定値の宣言は各ページの <head>（GTMスニペットの直前）にある。 */
+(function () {
+  'use strict';
+
+  var KEY = 'cookie_consent';
+  var saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (e) {}
+  if (saved === 'accepted' || saved === 'declined') return;
+
+  var plink = document.querySelector('a[href$="privacy.html"]');
+  var phref = plink ? plink.getAttribute('href') : 'privacy.html';
+
+  var bar = document.createElement('div');
+  bar.className = 'ckb';
+  bar.setAttribute('role', 'dialog');
+  bar.setAttribute('aria-label', 'Cookie の使用について');
+  bar.innerHTML =
+    '<p class="ckb-t">本サイトでは、利用状況の分析のために Cookie を使用します。「同意する」を選択されるまで解析は行いません。詳しくは<a href="' + phref + '">プライバシーポリシー</a>をご覧ください。</p>' +
+    '<div class="ckb-a">' +
+      '<button type="button" class="ckb-b ckb-d">拒否する</button>' +
+      '<button type="button" class="ckb-b ckb-y">同意する</button>' +
+    '</div>';
+  document.body.appendChild(bar);
+  setTimeout(function () { bar.classList.add('on'); }, 50);
+
+  var close = function (value) {
+    try { localStorage.setItem(KEY, value); } catch (e) {}
+    if (value === 'accepted' && typeof window.gtag === 'function') {
+      window.gtag('consent', 'update', { analytics_storage: 'granted' });
+    }
+    bar.classList.remove('on');
+    setTimeout(function () { if (bar.parentNode) { bar.parentNode.removeChild(bar); } }, 250);
+  };
+
+  bar.querySelector('.ckb-y').addEventListener('click', function () { close('accepted'); });
+  bar.querySelector('.ckb-d').addEventListener('click', function () { close('declined'); });
+})();
