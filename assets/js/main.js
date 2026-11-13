@@ -162,6 +162,9 @@
         headers: { Accept: 'application/json' }
       }).then(function (res) {
         if (res.ok) {
+          // GA4：送信成功だけを数える（GTMのカスタムイベント generate_lead → GA4のキーイベント）
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'generate_lead' });
           form.reset();
           show('お問い合わせを受け付けました。担当者よりご返信いたします。');
         } else {
