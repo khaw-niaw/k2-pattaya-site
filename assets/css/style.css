@@ -270,3 +270,5 @@ body.p-privacy .prose li{margin:0 0 6px}
 /* 2026-11-13 profile: lines only on the timeline */
 .tbl-plain{border-bottom:0}
 .tbl-plain .row{border-top:0;padding:8px 0}
+@media (min-width:768px){.tbl-plain .row{grid-template-columns:140px minmax(0,1fr)}}
+@media (min-width:1440px){.tbl-plain .row{grid-template-columns:160px minmax(0,1fr)}}
